@@ -45,9 +45,25 @@
           </mat-select>
         </mat-form-field>
         <mat-form-field appearance="fill">
-          <mat-label>Priorities</mat-label>
-          <mat-select [formControl]="priorities" multiple>
-            <mat-option *ngFor="let priority of prioritiesSources" [value]="priority" (onSelectionChange)="changePriorities('Priorities', $event)">
+          <mat-label>Priorities - Capacity Building</mat-label>
+          <mat-select [formControl]="capacityBuildingPriorities" multiple>
+            <mat-option *ngFor="let priority of capacityBuildingPrioritiesSources" [value]="priority" (onSelectionChange)="changePriorities('Priorities', $event)">
+              {{priority.opSelector}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Priorities - Focus on Quality</mat-label>
+          <mat-select [formControl]="qualityPriorities" multiple>
+            <mat-option *ngFor="let priority of qualityPrioritiesSources" [value]="priority" (onSelectionChange)="changePriorities('Priorities', $event)">
+              {{priority.opSelector}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Priorities - Promote Adoption</mat-label>
+          <mat-select [formControl]="adoptionPriorities" multiple>
+            <mat-option *ngFor="let priority of adoptionPrioritiesSources" [value]="priority" (onSelectionChange)="changePriorities('Priorities', $event)">
               {{priority.opSelector}}
             </mat-option>
           </mat-select>

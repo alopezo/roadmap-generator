@@ -21,8 +21,13 @@ export class AppComponent {
   visionSources!: sourceData[];
   aboutSnomedSources!: sourceData[];
   currentStateSources!: sourceData[];
-  prioritiesSources!: sourceData[];
-  priorities = new FormControl();
+  prioritiesIntro = '';
+  capacityBuildingPriorities = new FormControl();
+  capacityBuildingPrioritiesSources!: sourceData[];
+  qualityPriorities = new FormControl();
+  qualityPrioritiesSources!: sourceData[];
+  adoptionPriorities = new FormControl();
+  adoptionPrioritiesSources!: sourceData[];
   futureStateSources!: sourceData[];
   roadmap: string = '';
 
@@ -157,7 +162,10 @@ export class AppComponent {
         ground for improvements based on the implementation of SNOMED CT.`
       }
     ];
-    this.prioritiesSources = [
+    this.prioritiesIntro = `The key driver of this new strategy is to ensure the adoption of SNOMED CT across all
+    eHealth domain areas, requiring clinical terminology in new and existing solutions. This will
+    be pursued via the following priorities:`;
+    this.capacityBuildingPrioritiesSources = [
       {
         opSelector: "Engage clinicians",
         text: `Capacity building is one of the most important aspects of a SNOMED CT Implementation roadmap.`
@@ -181,9 +189,56 @@ export class AppComponent {
       {
         opSelector: "Establish the NRC",
         text: `Capacity building is one of the most important aspects of a SNOMED CT Implementation roadmap.`
+      },
+      {
+        opSelector: "Resolve infrastructure requirements",
+        text: `Capacity building is one of the most important aspects of a SNOMED CT Implementation roadmap.`
       }
     ];
-
+    this.qualityPrioritiesSources = [
+      {
+        opSelector: "Governance structure",
+        text: `Quality should be the focus of implementation efforts.`
+      },
+      {
+        opSelector: "Adopt a quality process",
+        text: `Quality should be the focus of implementation efforts.`
+      },
+      {
+        opSelector: "Develop local processes for authoring",
+        text: `Quality should be the focus of implementation efforts.`
+      },
+      {
+        opSelector: "Develop national position statement of adoption",
+        text: `Quality should be the focus of implementation efforts.`
+      }
+    ];
+    this.adoptionPrioritiesSources = [
+      {
+        opSelector: "Customize training",
+        text: `The strategy should promote the adoption of SNOMED CT.`
+      },
+      {
+        opSelector: "Get influencers on-board",
+        text: `The strategy should promote the adoption of SNOMED CT.`
+      },
+      {
+        opSelector: "Identify quick wins",
+        text: `The strategy should promote the adoption of SNOMED CT.`
+      },
+      {
+        opSelector: "Plan how to map with existing classifications",
+        text: `The strategy should promote the adoption of SNOMED CT.`
+      },
+      {
+        opSelector: "Promote projects that adopt SNOMED",
+        text: `The strategy should promote the adoption of SNOMED CT.`
+      },
+      {
+        opSelector: "Conformity assessments",
+        text: `The strategy should promote the adoption of SNOMED CT.`
+      }
+    ];
     this.futureStateSources = [
       {
         opSelector: "Placeholder",
@@ -196,11 +251,22 @@ export class AppComponent {
   changePriorities(section: string, event: any) {
     if(event.isUserInput) {
       setTimeout(() => {
-        if (this.priorities.value && this.priorities.value.length) {
-          let prioritiesText = ''
-          this.priorities.value.forEach((loopPriority: any) => {
-            prioritiesText = prioritiesText + `<h3>${loopPriority.opSelector}</h3>${loopPriority.text}<br><br>`;
+        let allPriorities:any = [];
+        if (this.capacityBuildingPriorities.value) {
+          allPriorities = allPriorities.concat(this.capacityBuildingPriorities.value);
+        }
+        if (this.qualityPriorities.value) {
+          allPriorities = allPriorities.concat(this.qualityPriorities.value);
+        }
+        if (this.adoptionPriorities.value) {
+          allPriorities = allPriorities.concat(this.adoptionPriorities.value);
+        }
+        if (allPriorities && allPriorities.length) {
+          let prioritiesText = `<p>${this.prioritiesIntro}</p><ul>`;
+          allPriorities.forEach((loopPriority: any) => {
+            prioritiesText = prioritiesText + `<li><b>${loopPriority.opSelector}</b>: ${loopPriority.text}</li>`;
           });
+          prioritiesText = prioritiesText + '</ul>'
           this.replaceSection(section, `<h2>${section.replace('-',' ')}</h2>${prioritiesText}<br><br>`);
         } else {
           this.replaceSection(section, '');
@@ -214,7 +280,7 @@ export class AppComponent {
       if (event.source.value == 'Not applicable') {
         this.replaceSection(section, '');
       } else {
-        this.replaceSection(section, `<h2>${section.replace('-',' ')}</h2>${event.source.value}<br><br>`);
+        this.replaceSection(section, `<h2>${section.replace('-',' ')}</h2><p>${event.source.value}</p>`);
       }
     }
   }
