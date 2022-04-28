@@ -1,0 +1,44 @@
+.example-spacer {
+    flex: 1 1 auto;
+  }
+
+button {
+    margin-left: 15px;
+}
+
+a {
+    margin-left: 15px;
+}
+
+#title {
+    margin-left: 15px;
+}
+
+::ng-deep.mat-menu-panel {
+    max-width: none !important;
+}
+
+mat-grid-list {
+    max-height: 90%;
+}
+
+.text-inside-grid {
+    position: absolute;
+    left: 5px;
+    top: 5px;
+    margin-left: 15px;
+    padding-right: 35px;
+    max-height: 90%;
+    overflow-y: scroll;
+    width: 100%;
+}
+
+.roadmap-action {
+    position: absolute;
+    right:    50px;
+    bottom:   0px;
+}
+
+mat-form-field {
+    width: 80%;
+}
