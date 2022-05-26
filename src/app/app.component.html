@@ -7,29 +7,33 @@
 
 </mat-toolbar>
 <mat-grid-list cols="4" rowHeight="100%">
-  <mat-grid-tile colspan="1">
+  <mat-grid-tile colspan="2">
     <div class="text-inside-grid" style="width: 100%;">
       <h2>Select components</h2>
       <form>
+        <mat-form-field class="example-form-field" appearance="fill">
+          <mat-label>Country Name</mat-label>
+          <input matInput type="text" [(ngModel)]="country" name="country" (ngModelChange)="nameChanged()">
+          <button *ngIf="country" matSuffix mat-icon-button aria-label="Clear" (click)="country=''">
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-form-field>
         <mat-form-field appearance="fill">
-          <mat-label>Vision</mat-label>
+          <mat-label>Background</mat-label>
           <mat-select>
-            <mat-option value="Not applicable" (onSelectionChange)="change('Vision', $event)">
+            <mat-option value="Not applicable" (onSelectionChange)="change('Background', $event)">
               Not applicable
             </mat-option>
-            <mat-option *ngFor="let visionSource of visionSources" [value]="visionSource.text" (onSelectionChange)="change('Vision', $event)">
-              {{visionSource.opSelector}}
+            <mat-option *ngFor="let background of backgrounds" [value]="background.text" (onSelectionChange)="change('Background', $event)">
+              {{background.opSelector}}
             </mat-option>
           </mat-select>
         </mat-form-field>
         <mat-form-field appearance="fill">
-          <mat-label>About SNOMED</mat-label>
-          <mat-select>
-            <mat-option value="Not applicable" (onSelectionChange)="change('About-SNOMED', $event)">
-              Not applicable
-            </mat-option>
-            <mat-option *ngFor="let aboutSnomedSource of aboutSnomedSources" [value]="aboutSnomedSource.text" (onSelectionChange)="change('About-SNOMED', $event)">
-              {{aboutSnomedSource.opSelector}}
+          <mat-label>Vision</mat-label>
+          <mat-select [formControl]="visionFormControl" [(ngModel)]="selectedVisions" name="selectedVisions" multiple>
+            <mat-option *ngFor="let vision of visions" [value]="vision" (onSelectionChange)="changeVision()">
+              {{vision.opSelector}}
             </mat-option>
           </mat-select>
         </mat-form-field>
@@ -44,6 +48,33 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Goals</mat-label>
+          <mat-select [formControl]="visionFormControl" [(ngModel)]="selectedGoals" name="selectedGoals" multiple>
+            <mat-option *ngFor="let goal of goals" [value]="goal" (onSelectionChange)="changeGoals()">
+              {{goal.opSelector}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Clinical focus</mat-label>
+          <mat-select [formControl]="focusFormControl" [(ngModel)]="selectedClinicalFocus" name="selectedClinicalFocus" multiple>
+            <mat-option *ngFor="let focus of clinicalFocus" [value]="focus" (onSelectionChange)="changeClinicalFocus()">
+              {{focus.opSelector}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Roadmap Steps</mat-label>
+          <mat-select [formControl]="stepsFormControl" [(ngModel)]="selectedSteps" name="selectedSteps" multiple>
+            <mat-optgroup *ngFor="let group of steps" [label]="group.group">
+              <mat-option *ngFor="let step of group.options" [value]="step" (onSelectionChange)="changeSteps()">
+                {{step.opSelector}}
+              </mat-option>
+            </mat-optgroup>
+          </mat-select>
+        </mat-form-field>
+
         <mat-form-field appearance="fill">
           <mat-label>Priorities - Capacity Building</mat-label>
           <mat-select [formControl]="capacityBuildingPriorities" multiple>
@@ -82,7 +113,7 @@
       </form>
     </div>
   </mat-grid-tile>
-  <mat-grid-tile  colspan="3">
+  <mat-grid-tile  colspan="2">
     <div class="text-inside-grid" [innerHTML]="roadmap"></div>
     <button class="roadmap-action" mat-flat-button color="primary" (click)="saveToWord()">Export to Word</button>
   </mat-grid-tile>
