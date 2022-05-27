@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import {FormControl} from '@angular/forms';
+import { Component, OnInit, Inject } from '@angular/core';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import {MatSnackBar} from '@angular/material/snack-bar';
 // const htmlToDocx = require('html-to-docx');
 // const saveAs = require('file-saver');
@@ -20,9 +20,9 @@ interface dataGrouper {
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit{
   title = 'roadmap-generator';
-  country= '';
+  country= 'Country Name';
 
   backgrounds!: sourceData[];
   visionIntro = '';
@@ -37,24 +37,28 @@ export class AppComponent {
   selectedClinicalFocus = [];
   stepIntro = '';
   steps!: dataGrouper[];
-  selectedSteps = [];
+  selectedSteps:any[] = [];
+  projects!: sourceData[];
+  closings!: sourceData[];
 
-
-  prioritiesIntro = '';
-  visionFormControl = new FormControl();
-  goalsFormControl = new FormControl();
-  focusFormControl = new FormControl();
-  stepsFormControl = new FormControl();
-  capacityBuildingPriorities = new FormControl();
-  capacityBuildingPrioritiesSources!: sourceData[];
-  qualityPriorities = new FormControl();
-  qualityPrioritiesSources!: sourceData[];
-  adoptionPriorities = new FormControl();
-  adoptionPrioritiesSources!: sourceData[];
   futureStateSources!: sourceData[];
   roadmap: string = '';
 
-  constructor(readonly snackBar: MatSnackBar) {}
+  constructor(readonly snackBar: MatSnackBar, public dialog: MatDialog) {}
+
+  openDialog(): void {
+    const dialogRef = this.dialog.open(StepsDatesDialog, {
+      width: '40%',
+      height: '90%',
+      data: this.selectedSteps,
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      // console.log('The dialog was closed');
+      // console.log(result);
+      this.selectedSteps = result;
+    });
+  }
 
   ngOnInit(): void {
     this.roadmap = `
@@ -66,7 +70,8 @@ export class AppComponent {
       <div class="Clinical-focus"></div>
       <div class="Steps"></div>
       <div class="Priorities"></div>
-      <div class="Future-state"></div>
+      <div class="Implementation-projects"></div>
+      <div class="Closing-remarks"></div>
       `;
       this.backgrounds = [
         {
@@ -282,7 +287,7 @@ export class AppComponent {
         ]
       },
       {
-        group: "Infrastructure",
+        group: "Promote Adoption",
         options: [
           {
             opSelector: "Develop national strategy for promoting adoption",
@@ -304,7 +309,7 @@ export class AppComponent {
         ]
       },
       {
-        group: "Infrastructure",
+        group: "Capacity Building",
         options: [
           {
             opSelector: "Engage financial sponsors",
@@ -331,92 +336,20 @@ export class AppComponent {
         ]
       }
     ];
-
-
-    this.prioritiesIntro = `The key driver of this new strategy is to ensure the adoption of SNOMED CT across all
-    eHealth domain areas, requiring clinical terminology in new and existing solutions. This will
-    be pursued via the following priorities:`;
-    this.capacityBuildingPrioritiesSources = [
-      {
-        opSelector: "Engage clinicians",
-        text: `Capacity building is one of the most important aspects of a SNOMED CT Implementation roadmap.`
-      },
-      {
-        opSelector: "Engage stakeholders",
-        text: `Capacity building is one of the most important aspects of a SNOMED CT Implementation roadmap.`
-      },
-      {
-        opSelector: "Engage software specialists",
-        text: `Capacity building is one of the most important aspects of a SNOMED CT Implementation roadmap.`
-      },
-      {
-        opSelector: "Engage with the research community",
-        text: `Capacity building is one of the most important aspects of a SNOMED CT Implementation roadmap.`
-      },
-      {
-        opSelector: "Develop an education and training strategy",
-        text: `Capacity building is one of the most important aspects of a SNOMED CT Implementation roadmap.`
-      },
-      {
-        opSelector: "Establish the NRC",
-        text: `Capacity building is one of the most important aspects of a SNOMED CT Implementation roadmap.`
-      },
-      {
-        opSelector: "Resolve infrastructure requirements",
-        text: `Capacity building is one of the most important aspects of a SNOMED CT Implementation roadmap.`
-      }
-    ];
-    this.qualityPrioritiesSources = [
-      {
-        opSelector: "Governance structure",
-        text: `Quality should be the focus of implementation efforts.`
-      },
-      {
-        opSelector: "Adopt a quality process",
-        text: `Quality should be the focus of implementation efforts.`
-      },
-      {
-        opSelector: "Develop local processes for authoring",
-        text: `Quality should be the focus of implementation efforts.`
-      },
-      {
-        opSelector: "Develop national position statement of adoption",
-        text: `Quality should be the focus of implementation efforts.`
-      }
-    ];
-    this.adoptionPrioritiesSources = [
-      {
-        opSelector: "Customize training",
-        text: `The strategy should promote the adoption of SNOMED CT.`
-      },
-      {
-        opSelector: "Get influencers on-board",
-        text: `The strategy should promote the adoption of SNOMED CT.`
-      },
-      {
-        opSelector: "Identify quick wins",
-        text: `The strategy should promote the adoption of SNOMED CT.`
-      },
-      {
-        opSelector: "Plan how to map with existing classifications",
-        text: `The strategy should promote the adoption of SNOMED CT.`
-      },
-      {
-        opSelector: "Promote projects that adopt SNOMED",
-        text: `The strategy should promote the adoption of SNOMED CT.`
-      },
-      {
-        opSelector: "Conformity assessments",
-        text: `The strategy should promote the adoption of SNOMED CT.`
-      }
-    ];
-    this.futureStateSources = [
+    this.projects = [
       {
         opSelector: "Placeholder",
-        text: `Deascribe the target scenario, where SNOMED CT is fully implemented, and the describe teh benefits for data entry, 
-        analytics, reporting, billing, and patient care.`
+        text: `Define use cases and location/scope of initial implementation focus. e.g. Hospital X, Clinic Y, Clinical register Z, Region W, National EHR, National HIE infrastructure etc`
       }
     ];
+    this.closings = [
+      {
+        opSelector: "Placeholder",
+        text: `Conclude by saying something inspirational about the vision and benefits of adopting SNOMED CT`
+      }
+    ];
+
+    this.nameChanged()
   }
 
   changeVision() {
@@ -454,7 +387,7 @@ export class AppComponent {
       if (this.selectedClinicalFocus.length > 0) {
         let focusText = `<p>${this.clinicalFocusIntro}</p><ul>`;
         this.selectedClinicalFocus.forEach((focus: any) => {
-          focusText = focusText + `<li>${focus.text}</li>`;
+          focusText = focusText + `<li>${focus.opSelector}: ${focus.text}</li>`;
         })
         this.replaceSection('Clinical-Focus', `<h2>Clinical focus</h2>${focusText}</ul><br><br>`);
         this.nameChanged()
@@ -466,47 +399,25 @@ export class AppComponent {
 
   changeSteps() {
     setTimeout(() => {
-      console.log(this.selectedSteps)
-      // if (this.selectedSteps.length > 0) {
-      //   let stepsText = `<p>${this.stepIntro}</p><ul>`;
-      //   this.selectedSteps.forEach((group: any) => {
-      //     stepsText = stepsText + `<li>${group.group}</li>`;
-      //     stepsText = stepsText + `<li>${group.group}</li>`;
-      //   })
-      //   this.replaceSection('Clinical-Focus', `<h2>Clinical focus</h2>${stepsText}</ul><br><br>`);
-      //   this.nameChanged()
-      // } else {
-      //   this.replaceSection('Clinical-Focus', '');
-      // }
+      if (this.selectedSteps.length > 0) {
+        let groups = this.selectedSteps.map( ({group}) => (group))
+        let groupsu =  [...new Set(groups)];
+        let stepsText = `<p>${this.stepIntro}</p><ul>`;
+        groupsu.forEach( (group:any) => {
+          stepsText = stepsText + `<li>${group}<ul>`;
+          this.selectedSteps.forEach((step: any) => {
+            if (step.group == group) {
+              stepsText = stepsText + `<li>${step.step.opSelector}: ${step.step.text}</li>`;
+            }
+          })
+          stepsText = stepsText + `</ul></li>`;
+        });
+        this.replaceSection('Clinical-Focus', `<h2>Clinical focus</h2>${stepsText}</ul><br><br>`);
+        this.nameChanged()
+      } else {
+        this.replaceSection('Clinical-Focus', '');
+      }
     }, 100);
-  }
-
-  changePriorities(section: string, event: any) {
-    if(event.isUserInput) {
-      setTimeout(() => {
-        let allPriorities:any = [];
-        if (this.capacityBuildingPriorities.value) {
-          allPriorities = allPriorities.concat(this.capacityBuildingPriorities.value);
-        }
-        if (this.qualityPriorities.value) {
-          allPriorities = allPriorities.concat(this.qualityPriorities.value);
-        }
-        if (this.adoptionPriorities.value) {
-          allPriorities = allPriorities.concat(this.adoptionPriorities.value);
-        }
-        if (allPriorities && allPriorities.length) {
-          let prioritiesText = `<p>${this.prioritiesIntro}</p><ul>`;
-          allPriorities.forEach((loopPriority: any) => {
-            prioritiesText = prioritiesText + `<li><b>${loopPriority.opSelector}</b>: ${loopPriority.text}</li>`;
-          });
-          prioritiesText = prioritiesText + '</ul>'
-          this.replaceSection(section, `<h2>${section.replace('-',' ')}</h2>${prioritiesText}<br><br>`);
-          this.nameChanged()
-        } else {
-          this.replaceSection(section, '');
-        }
-      }, 100);
-    }
   }
 
   change(section: string, event: any) {
@@ -578,3 +489,18 @@ export class AppComponent {
   styles: [],
 })
 export class AppSnackComponent {}
+
+@Component({
+  selector: 'steps-dates-dialog',
+  templateUrl: 'setps-dates-dialog.html',
+})
+export class StepsDatesDialog {
+  constructor(
+    public dialogRef: MatDialogRef<StepsDatesDialog>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+  ) {}
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+}
