@@ -67,7 +67,7 @@ export const steps = [
       ]
     },
     {
-      group: "Promote adoption",
+      group: "Promote Adoption",
       options: [
         {
           opSelector: "Develop national strategy for promoting adoption",
@@ -89,7 +89,7 @@ export const steps = [
       ]
     },
     {
-      group: "Capacity building",
+      group: "Capacity Building",
       options: [
         {
           opSelector: "Engage financial sponsors",
