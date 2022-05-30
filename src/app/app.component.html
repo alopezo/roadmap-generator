@@ -43,7 +43,7 @@
             <mat-option value="Not applicable" (onSelectionChange)="change('Current-state', $event)">
               Not applicable
             </mat-option>
-            <mat-option *ngFor="let currentStateSource of currentStateSources" [value]="currentStateSource.text" (onSelectionChange)="change('Current-state', $event)">
+            <mat-option *ngFor="let currentStateSource of currentStates" [value]="currentStateSource.text" (onSelectionChange)="change('Current-state', $event)">
               {{currentStateSource.opSelector}}
             </mat-option>
           </mat-select>
@@ -74,7 +74,7 @@
             </mat-optgroup>
           </mat-select>
         </mat-form-field>
-        <button mat-flat-button color="primary" (click)="openDialog()" [disabled]="selectedSteps.length == 0">
+        <button mat-icon-button color="primary" (click)="openStepsDialog()" [disabled]="selectedSteps.length == 0">
           <mat-icon>calendar_today</mat-icon>
         </button>
         <mat-form-field appearance="fill">
@@ -104,7 +104,8 @@
   </mat-grid-tile>
   <mat-grid-tile  colspan="2">
     <div class="text-inside-grid" [innerHTML]="roadmap"></div>
-    <button class="roadmap-action" mat-flat-button color="primary" (click)="saveToWord()">Export to Word</button>
+    <button class="word-action" mat-flat-button color="primary" (click)="saveToWord()">Export to Word</button>
+    <button class="timeline-action" mat-flat-button color="primary" (click)="openTimelineDialog()">Timeline</button>
   </mat-grid-tile>
 </mat-grid-list>
 <router-outlet></router-outlet>

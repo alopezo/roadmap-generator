@@ -1,11 +1,27 @@
-<h1 mat-dialog-title>Hi, select date for {{data.length}} roadmap steps:</h1>
+<h1 mat-dialog-title>Select date for {{data.selectedSteps.length}} roadmap steps:</h1>
 <div mat-dialog-content>
-  <mat-form-field appearance="fill" *ngFor="let step of data" style="width: 60%;">
+  <mat-form-field appearance="fill" style="width: 60%;">
+    <mat-label>Roadmap start</mat-label>
+    <input matInput [matDatepicker]="pickerStart" [(ngModel)]="data.roadmapStart">
+    <mat-hint>MM/DD/YYYY</mat-hint>
+    <mat-datepicker-toggle matSuffix [for]="pickerStart"></mat-datepicker-toggle>
+    <mat-datepicker #pickerStart></mat-datepicker>
+    <br>
+  </mat-form-field>
+  <mat-form-field appearance="fill" *ngFor="let step of data.selectedSteps" style="width: 60%;">
     <mat-label>{{step.step.opSelector}}</mat-label>
     <input matInput [matDatepicker]="picker" [(ngModel)]="step.date">
     <mat-hint>MM/DD/YYYY</mat-hint>
     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-datepicker #picker></mat-datepicker>
+    <br>
+  </mat-form-field>
+  <mat-form-field appearance="fill" style="width: 60%;">
+    <mat-label>Roadmap end</mat-label>
+    <input matInput [matDatepicker]="pickerEnd" [(ngModel)]="data.roadmapEnd">
+    <mat-hint>MM/DD/YYYY</mat-hint>
+    <mat-datepicker-toggle matSuffix [for]="pickerEnd"></mat-datepicker-toggle>
+    <mat-datepicker #pickerEnd></mat-datepicker>
     <br>
   </mat-form-field>
 </div>

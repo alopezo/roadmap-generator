@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
-import { AppComponent, AppSnackComponent, StepsDatesDialog } from './app.component';
+import { AppComponent, AppSnackComponent, StepsDatesDialog, TimelineDialog } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
@@ -19,11 +19,15 @@ import {MatDialogModule} from '@angular/material/dialog';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
 
+import { MzdTimelineModule } from 'ngx-mzd-timeline';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+
 @NgModule({
   declarations: [
     AppComponent,
     AppSnackComponent,
-    StepsDatesDialog
+    StepsDatesDialog,
+    TimelineDialog
   ],
   imports: [
     BrowserModule,
@@ -42,10 +46,12 @@ import {MatNativeDateModule} from '@angular/material/core';
     MatInputModule,
     MatDialogModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MzdTimelineModule,
+    FontAwesomeModule
   ],
   providers: [],
-  entryComponents: [StepsDatesDialog],
+  entryComponents: [StepsDatesDialog, TimelineDialog],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

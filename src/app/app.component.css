@@ -33,9 +33,15 @@ mat-grid-list {
     width: 100%;
 }
 
-.roadmap-action {
+.word-action {
     position: absolute;
     right:    50px;
+    bottom:   0px;
+}
+
+.timeline-action {
+    position: absolute;
+    right:    200px;
     bottom:   0px;
 }
 
