@@ -10,7 +10,7 @@
       <mzd-icon><fa-icon [icon]="faNetworkWired" style="color: chocolate;" *ngIf="step.group == 'Infrastructure'"></fa-icon></mzd-icon>
       <mzd-icon><fa-icon [icon]="faGraduationCap" style="color: chocolate;" *ngIf="step.group == 'Promote Adoption'"></fa-icon></mzd-icon>
       <mzd-icon><fa-icon [icon]="faUsers" style="color: chocolate;" *ngIf="step.group == 'Capacity Building'"></fa-icon></mzd-icon>
-      {{step.date | date:'mediumDate'}}: {{step.step.opSelector}}
+      {{step.dateEnd | date:'mediumDate'}}: {{step.step.opSelector}}
     </mzd-timeline-content>
     <mzd-timeline-content [border]="true">
       <mzd-icon><fa-icon [icon]="faCheck" style="color: chocolate;"></fa-icon></mzd-icon>

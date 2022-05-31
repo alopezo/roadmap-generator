@@ -30,7 +30,6 @@ mat-grid-list {
     padding-right: 35px;
     max-height: 90%;
     overflow-y: scroll;
-    width: 100%;
 }
 
 .word-action {
@@ -45,6 +44,11 @@ mat-grid-list {
     bottom:   0px;
 }
 
-mat-form-field {
+.stepsFormControl {
+    width: 40%; 
+    margin: 10px;
+}
+
+.selectorsControl {
     width: 80%;
 }

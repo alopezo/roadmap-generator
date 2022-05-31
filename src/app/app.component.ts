@@ -1,7 +1,7 @@
 import {Component, OnInit, Inject} from '@angular/core';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import {faFlagCheckered, faCheck, faClipboardList, faNetworkWired, faGraduationCap, faUsers, faList} from '@fortawesome/free-solid-svg-icons';
+import {faFlagCheckered, faCheck, faClipboardList, faNetworkWired, faGraduationCap, faUsers, faList, faEdit} from '@fortawesome/free-solid-svg-icons';
 import {backgrounds} from './roadmap-content/background';
 import {visionIntro, visions} from  './roadmap-content/vision';
 import {currentStates} from './roadmap-content/current-states';
@@ -18,9 +18,21 @@ interface sourceData {
   text: string;
 }
 
+interface milestone {
+  name: string;
+  text: string;
+  date: string;
+}
+
+interface stepData extends sourceData {
+  dateStart?: Date;
+  dateEnd?: Date;
+  milestones?: milestone[];
+} 
+
 interface dataGrouper {
   group: string;
-  options: sourceData[];
+  options: stepData[];
 }
 
 @Component({
@@ -214,7 +226,7 @@ export class AppComponent implements OnInit{
 
   openStepsDialog(): void {
     const dialogRef = this.dialog.open(StepsDatesDialog, {
-      width: '40%',
+      width: '80%',
       height: '90%',
       data: {selectedSteps: this.selectedSteps, roadmapStart: this.roadmapStart, roadmapEnd: this.roadmapEnd},
       disableClose: true
@@ -229,8 +241,8 @@ export class AppComponent implements OnInit{
 
   openTimelineDialog(): void {
     const sortedSteps = this.selectedSteps.sort(function(a,b){
-      var key1 = new Date(a.date);
-      var key2 = new Date(b.date);
+      var key1 = new Date(a.dateEnd);
+      var key2 = new Date(b.dateEnd);
       if (key1 < key2) {
           return -1;
       } else if (key1 == key2) {
@@ -266,6 +278,7 @@ export class AppSnackComponent {}
 @Component({
   selector: 'steps-dates-dialog',
   templateUrl: 'setps-dates-dialog.html',
+  styleUrls: ['setps-dates-dialog.css']
 })
 export class StepsDatesDialog {
   constructor(
@@ -290,6 +303,7 @@ export class TimelineDialog {
   faGraduationCap = faGraduationCap;
   faUsers = faUsers;
   faList = faList;
+  faEdit = faEdit;
   constructor(
     public dialogRef: MatDialogRef<TimelineDialog>,
     @Inject(MAT_DIALOG_DATA) public data: any,

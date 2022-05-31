@@ -11,14 +11,14 @@
     <div class="text-inside-grid" style="width: 100%;">
       <h2>Select components</h2>
       <form>
-        <mat-form-field class="example-form-field" appearance="fill">
+        <mat-form-field class="example-form-field" appearance="fill" class="selectorsControl">
           <mat-label>Country Name</mat-label>
           <input matInput type="text" [(ngModel)]="country" name="country" (ngModelChange)="nameChanged()">
           <button *ngIf="country" matSuffix mat-icon-button aria-label="Clear" (click)="country=''">
             <mat-icon>close</mat-icon>
           </button>
         </mat-form-field>
-        <mat-form-field appearance="fill">
+        <mat-form-field appearance="fill" class="selectorsControl">
           <mat-label>Background</mat-label>
           <mat-select>
             <mat-option value="Not applicable" (onSelectionChange)="change('Background', $event)">
@@ -29,7 +29,7 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
-        <mat-form-field appearance="fill">
+        <mat-form-field appearance="fill" class="selectorsControl">
           <mat-label>Vision</mat-label>
           <mat-select [(ngModel)]="selectedVisions" name="selectedVisions" multiple>
             <mat-option *ngFor="let vision of visions" [value]="vision" (onSelectionChange)="changeVision()">
@@ -37,7 +37,7 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
-        <mat-form-field appearance="fill">
+        <mat-form-field appearance="fill" class="selectorsControl">
           <mat-label>Current state</mat-label>
           <mat-select>
             <mat-option value="Not applicable" (onSelectionChange)="change('Current-state', $event)">
@@ -48,7 +48,7 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
-        <mat-form-field appearance="fill">
+        <mat-form-field appearance="fill" class="selectorsControl">
           <mat-label>Goals</mat-label>
           <mat-select [(ngModel)]="selectedGoals" name="selectedGoals" multiple>
             <mat-option *ngFor="let goal of goals" [value]="goal" (onSelectionChange)="changeGoals()">
@@ -56,7 +56,7 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
-        <mat-form-field appearance="fill">
+        <mat-form-field appearance="fill" class="selectorsControl">
           <mat-label>Clinical focus</mat-label>
           <mat-select [(ngModel)]="selectedClinicalFocus" name="selectedClinicalFocus" multiple>
             <mat-option *ngFor="let focus of clinicalFocus" [value]="focus" (onSelectionChange)="changeClinicalFocus()">
@@ -64,7 +64,7 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
-        <mat-form-field appearance="fill">
+        <mat-form-field appearance="fill" class="selectorsControl">
           <mat-label>Roadmap Steps</mat-label>
           <mat-select [(ngModel)]="selectedSteps" name="selectedSteps" multiple>
             <mat-optgroup *ngFor="let group of steps" [label]="group.group">
@@ -75,9 +75,9 @@
           </mat-select>
         </mat-form-field>
         <button mat-icon-button color="primary" (click)="openStepsDialog()" [disabled]="selectedSteps.length == 0">
-          <mat-icon>calendar_today</mat-icon>
+          <mat-icon>edit</mat-icon>
         </button>
-        <mat-form-field appearance="fill">
+        <mat-form-field appearance="fill" class="selectorsControl">
           <mat-label>Implementation projects</mat-label>
           <mat-select>
             <mat-option value="Not applicable" (onSelectionChange)="change('Implementation-projects', $event)">
@@ -88,7 +88,7 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
-        <mat-form-field appearance="fill">
+        <mat-form-field appearance="fill" class="selectorsControl">
           <mat-label>Closing remarks</mat-label>
           <mat-select>
             <mat-option value="Not applicable" (onSelectionChange)="change('Closing-remarks', $event)">
@@ -103,7 +103,7 @@
     </div>
   </mat-grid-tile>
   <mat-grid-tile  colspan="2">
-    <div class="text-inside-grid" [innerHTML]="roadmap"></div>
+    <div class="text-inside-grid" [innerHTML]="roadmap" id="roadmap-preview"></div>
     <button class="word-action" mat-flat-button color="primary" (click)="saveToWord()">Export to Word</button>
     <button class="timeline-action" mat-flat-button color="primary" (click)="openTimelineDialog()">Timeline</button>
   </mat-grid-tile>
