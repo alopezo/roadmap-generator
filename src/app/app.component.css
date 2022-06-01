@@ -44,6 +44,12 @@ mat-grid-list {
     bottom:   0px;
 }
 
+.gantt-action {
+    position: absolute;
+    right:    320px;
+    bottom:   0px;
+}
+
 .stepsFormControl {
     width: 40%; 
     margin: 10px;

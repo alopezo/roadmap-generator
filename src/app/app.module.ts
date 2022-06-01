@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
-import { AppComponent, AppSnackComponent, StepsDatesDialog, TimelineDialog } from './app.component';
+import { AppComponent, AppSnackComponent, StepsDatesDialog, TimelineDialog, GanttDialog } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
@@ -21,13 +21,15 @@ import {MatNativeDateModule} from '@angular/material/core';
 
 import { MzdTimelineModule } from 'ngx-mzd-timeline';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { NgxGanttModule, GANTT_GLOBAL_CONFIG } from '@worktile/gantt';
 
 @NgModule({
   declarations: [
     AppComponent,
     AppSnackComponent,
     StepsDatesDialog,
-    TimelineDialog
+    TimelineDialog,
+    GanttDialog
   ],
   imports: [
     BrowserModule,
@@ -48,10 +50,22 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     MatDatepickerModule,
     MatNativeDateModule,
     MzdTimelineModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    NgxGanttModule
   ],
-  providers: [],
-  entryComponents: [StepsDatesDialog, TimelineDialog],
+  providers: [
+    {
+      provide: GANTT_GLOBAL_CONFIG,
+      useValue: {
+        dateFormat: {
+             yearQuarter: `QQQ 'of' yyyy`,
+             month: 'LLLL',
+             yearMonth: `LLLL yyyy'(week' w ')'`
+        }
+      }
+    }
+  ],
+  entryComponents: [StepsDatesDialog, TimelineDialog, GanttDialog],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

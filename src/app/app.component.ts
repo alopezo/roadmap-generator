@@ -10,6 +10,7 @@ import {clinicalFocusIntro, clinicalFocus} from './roadmap-content/clinical-focu
 import {steps, stepsIntro} from './roadmap-content/steps';
 import {projects} from './roadmap-content/projects';
 import {closings} from './roadmap-content/closing';
+import { GanttItem } from '@worktile/gantt';
 
 declare var anime: any;  
 
@@ -62,8 +63,8 @@ export class AppComponent implements OnInit{
   closings!: sourceData[];
 
   roadmap: string = '';
-  roadmapStart: Date | undefined;
-  roadmapEnd: Date | undefined;
+  roadmapStart: Date = new Date('2022-01-01');
+  roadmapEnd: Date = new Date('2022-12-31');
 
   constructor(readonly snackBar: MatSnackBar, public dialog: MatDialog) {}
 
@@ -266,6 +267,38 @@ export class AppComponent implements OnInit{
     });
   }
 
+  openGanttDialog(): void {
+    const items: GanttItem[] = [
+      { id: '000000', title: 'Task 0', start: 1627729997, end: 1628421197 },
+      { id: '000001', title: 'Task 1', start: 1617361997, end: 1625483597 }
+    ];
+
+    let stepsList: GanttItem[] = [];
+    this.selectedSteps.forEach( step => {
+      let loopItem = { id: step.step.opSelector, title: step.step.opSelector, start: this.dateToTimestamp(step.dateStart), end: this.dateToTimestamp(step.dateEnd) }
+      stepsList.push(loopItem);
+    });
+
+    const dialogRef = this.dialog.open(GanttDialog, {
+      width: '100%',
+      height: '90%',
+      data: {
+        country: this.country,
+        selectedSteps: this.selectedSteps, 
+        roadmapStart: this.dateToTimestamp(this.roadmapStart), 
+        roadmapEnd: this.dateToTimestamp(this.roadmapEnd),
+        items: stepsList
+      },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+    });
+  }
+
+  dateToTimestamp(date: Date) {
+    return (Math.floor(date.getTime() / 1000));
+  }
+
 }
 
 @Component({
@@ -306,6 +339,21 @@ export class TimelineDialog {
   faEdit = faEdit;
   constructor(
     public dialogRef: MatDialogRef<TimelineDialog>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+  ) {}
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+}
+
+@Component({
+  selector: 'gantt-dialog',
+  templateUrl: 'gantt-dialog.html',
+})
+export class GanttDialog {
+  constructor(
+    public dialogRef: MatDialogRef<GanttDialog>,
     @Inject(MAT_DIALOG_DATA) public data: any,
   ) {}
 
