@@ -10,96 +10,94 @@
   <mat-grid-tile colspan="2">
     <div class="text-inside-grid" style="width: 100%;">
       <h2>Select components</h2>
-      <form>
-        <mat-form-field class="example-form-field" appearance="fill" class="selectorsControl">
-          <mat-label>Country Name</mat-label>
-          <input matInput type="text" [(ngModel)]="country" name="country" (ngModelChange)="nameChanged()">
-          <button *ngIf="country" matSuffix mat-icon-button aria-label="Clear" (click)="country=''">
-            <mat-icon>close</mat-icon>
-          </button>
-        </mat-form-field>
-        <mat-form-field appearance="fill" class="selectorsControl">
-          <mat-label>Background</mat-label>
-          <mat-select>
-            <mat-option value="Not applicable" (onSelectionChange)="change('Background', $event)">
-              Not applicable
-            </mat-option>
-            <mat-option *ngFor="let background of backgrounds" [value]="background.text" (onSelectionChange)="change('Background', $event)">
-              {{background.opSelector}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-        <mat-form-field appearance="fill" class="selectorsControl">
-          <mat-label>Vision</mat-label>
-          <mat-select [(ngModel)]="selectedVisions" name="selectedVisions" multiple>
-            <mat-option *ngFor="let vision of visions" [value]="vision" (onSelectionChange)="changeVision()">
-              {{vision.opSelector}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-        <mat-form-field appearance="fill" class="selectorsControl">
-          <mat-label>Current state</mat-label>
-          <mat-select>
-            <mat-option value="Not applicable" (onSelectionChange)="change('Current-state', $event)">
-              Not applicable
-            </mat-option>
-            <mat-option *ngFor="let currentStateSource of currentStates" [value]="currentStateSource.text" (onSelectionChange)="change('Current-state', $event)">
-              {{currentStateSource.opSelector}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-        <mat-form-field appearance="fill" class="selectorsControl">
-          <mat-label>Goals</mat-label>
-          <mat-select [(ngModel)]="selectedGoals" name="selectedGoals" multiple>
-            <mat-option *ngFor="let goal of goals" [value]="goal" (onSelectionChange)="changeGoals()">
-              {{goal.opSelector}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-        <mat-form-field appearance="fill" class="selectorsControl">
-          <mat-label>Clinical focus</mat-label>
-          <mat-select [(ngModel)]="selectedClinicalFocus" name="selectedClinicalFocus" multiple>
-            <mat-option *ngFor="let focus of clinicalFocus" [value]="focus" (onSelectionChange)="changeClinicalFocus()">
-              {{focus.opSelector}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-        <mat-form-field appearance="fill" class="selectorsControl">
-          <mat-label>Roadmap Steps</mat-label>
-          <mat-select [(ngModel)]="selectedSteps" name="selectedSteps" multiple>
-            <mat-optgroup *ngFor="let group of steps" [label]="group.group">
-              <mat-option *ngFor="let step of group.options" [value]="{ group: group.group, step: step, date: '' }" (onSelectionChange)="changeSteps()">
-                {{step.opSelector}}
-              </mat-option>
-            </mat-optgroup>
-          </mat-select>
-        </mat-form-field>
-        <button mat-icon-button color="primary" (click)="openStepsDialog()" [disabled]="selectedSteps.length == 0">
-          <mat-icon>edit</mat-icon>
+      <mat-form-field class="example-form-field" appearance="fill" class="selectorsControl">
+        <mat-label>Country Name</mat-label>
+        <input matInput type="text" [(ngModel)]="country" name="country" (ngModelChange)="nameChanged()">
+        <button *ngIf="country" matSuffix mat-icon-button aria-label="Clear" (click)="country=''">
+          <mat-icon>close</mat-icon>
         </button>
-        <mat-form-field appearance="fill" class="selectorsControl">
-          <mat-label>Implementation projects</mat-label>
-          <mat-select>
-            <mat-option value="Not applicable" (onSelectionChange)="change('Implementation-projects', $event)">
-              Not applicable
+      </mat-form-field>
+      <mat-form-field appearance="fill" class="selectorsControl">
+        <mat-label>Background</mat-label>
+        <mat-select [(ngModel)]="selectedBackground" [compareWith]="compareOptions">
+          <mat-option value="" (onSelectionChange)="change('Background', $event)">
+            Not applicable
+          </mat-option>
+          <mat-option *ngFor="let background of backgrounds" [value]="background" (onSelectionChange)="change('Background', $event)">
+            {{background.opSelector}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="fill" class="selectorsControl">
+        <mat-label>Vision</mat-label>
+        <mat-select [(ngModel)]="selectedVisions" [compareWith]="compareOptions" name="selectedVisions" multiple>
+          <mat-option *ngFor="let vision of visions" [value]="vision" (onSelectionChange)="changeVision()">
+            {{vision.opSelector}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="fill" class="selectorsControl">
+        <mat-label>Current state</mat-label>
+        <mat-select [(ngModel)]="selectedCurrentState" [compareWith]="compareOptions">
+          <mat-option value="Not applicable" (onSelectionChange)="change('Current-state', $event)">
+            Not applicable
+          </mat-option>
+          <mat-option *ngFor="let currentStateSource of currentStates" [value]="currentStateSource" (onSelectionChange)="change('Current-state', $event)">
+            {{currentStateSource.opSelector}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="fill" class="selectorsControl">
+        <mat-label>Goals</mat-label>
+        <mat-select [(ngModel)]="selectedGoals" [compareWith]="compareOptions" name="selectedGoals" multiple>
+          <mat-option *ngFor="let goal of goals" [value]="goal" (onSelectionChange)="changeGoals()">
+            {{goal.opSelector}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="fill" class="selectorsControl">
+        <mat-label>Clinical focus</mat-label>
+        <mat-select [(ngModel)]="selectedClinicalFocus" [compareWith]="compareOptions" name="selectedClinicalFocus" multiple>
+          <mat-option *ngFor="let focus of clinicalFocus" [value]="focus" (onSelectionChange)="changeClinicalFocus()">
+            {{focus.opSelector}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="fill" class="selectorsControl">
+        <mat-label>Roadmap Steps</mat-label>
+        <mat-select [(ngModel)]="selectedSteps" name="selectedSteps" [compareWith]="compareOptionsSteps" multiple>
+          <mat-optgroup *ngFor="let group of steps" [label]="group.group">
+            <mat-option *ngFor="let step of group.options" [value]="{ group: group.group, step: step, date: '' }" (onSelectionChange)="changeSteps()">
+              {{step.opSelector}}
             </mat-option>
-            <mat-option *ngFor="let project of projects" [value]="project.text" (onSelectionChange)="change('Implementation-projects', $event)">
-              {{project.opSelector}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-        <mat-form-field appearance="fill" class="selectorsControl">
-          <mat-label>Closing remarks</mat-label>
-          <mat-select>
-            <mat-option value="Not applicable" (onSelectionChange)="change('Closing-remarks', $event)">
-              Not applicable
-            </mat-option>
-            <mat-option *ngFor="let closing of closings" [value]="closing.text" (onSelectionChange)="change('Closing-remarks', $event)">
-              {{closing.opSelector}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </form>
+          </mat-optgroup>
+        </mat-select>
+      </mat-form-field>
+      <button mat-icon-button color="primary" (click)="openStepsDialog()" [disabled]="selectedSteps.length == 0">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <mat-form-field appearance="fill" class="selectorsControl">
+        <mat-label>Implementation projects</mat-label>
+        <mat-select [(ngModel)]="selectedProject" [compareWith]="compareOptions">
+          <mat-option value="Not applicable" (onSelectionChange)="change('Implementation-projects', $event)">
+            Not applicable
+          </mat-option>
+          <mat-option *ngFor="let project of projects" [value]="project" (onSelectionChange)="change('Implementation-projects', $event)">
+            {{project.opSelector}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="fill" class="selectorsControl">
+        <mat-label>Closing remarks</mat-label>
+        <mat-select [(ngModel)]="selectedClosing" [compareWith]="compareOptions">
+          <mat-option value="Not applicable" (onSelectionChange)="change('Closing-remarks', $event)">
+            Not applicable
+          </mat-option>
+          <mat-option *ngFor="let closing of closings" [value]="closing" (onSelectionChange)="change('Closing-remarks', $event)">
+            {{closing.opSelector}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
     </div>
   </mat-grid-tile>
   <mat-grid-tile  colspan="2">
@@ -107,7 +105,12 @@
     <button class="word-action" mat-flat-button color="primary" (click)="saveToWord()">Export to Word</button>
     <button class="timeline-action" mat-flat-button color="primary" (click)="openTimelineDialog()">Timeline</button>
     <button class="gantt-action" mat-flat-button color="primary" (click)="openGanttDialog()">Gantt</button>
+    <button class="export-action" mat-flat-button color="primary" (click)="export()">Export</button>
 
+    <button class="import-action" type="button" mat-raised-button color="primary" (click)="fileInput.click()">Import</button>
+    <input hidden (change)="uploadFile($event)" #fileInput type="file" id="file">
+
+    <!-- <input class="import-action" type="file" name="files" mat-flat-button color="primary" (change)="uploadFile($event)" /> -->
   </mat-grid-tile>
 </mat-grid-list>
 <router-outlet></router-outlet>

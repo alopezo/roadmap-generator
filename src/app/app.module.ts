@@ -22,6 +22,7 @@ import {MatNativeDateModule} from '@angular/material/core';
 import { MzdTimelineModule } from 'ngx-mzd-timeline';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgxGanttModule, GANTT_GLOBAL_CONFIG } from '@worktile/gantt';
+import { GanttChartComponent } from './gantt-chart/gantt-chart.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { NgxGanttModule, GANTT_GLOBAL_CONFIG } from '@worktile/gantt';
     AppSnackComponent,
     StepsDatesDialog,
     TimelineDialog,
-    GanttDialog
+    GanttDialog,
+    GanttChartComponent
   ],
   imports: [
     BrowserModule,

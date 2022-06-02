@@ -50,6 +50,18 @@ mat-grid-list {
     bottom:   0px;
 }
 
+.export-action {
+    position: absolute;
+    right:    420px;
+    bottom:   0px;
+}
+
+.import-action {
+    position: absolute;
+    right:    520px;
+    bottom:   0px;
+}
+
 .stepsFormControl {
     width: 40%; 
     margin: 10px;

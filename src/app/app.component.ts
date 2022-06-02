@@ -10,7 +10,7 @@ import {clinicalFocusIntro, clinicalFocus} from './roadmap-content/clinical-focu
 import {steps, stepsIntro} from './roadmap-content/steps';
 import {projects} from './roadmap-content/projects';
 import {closings} from './roadmap-content/closing';
-import { GanttItem } from '@worktile/gantt';
+import { GanttItem, GanttPrintService } from '@worktile/gantt';
 
 declare var anime: any;  
 
@@ -46,10 +46,12 @@ export class AppComponent implements OnInit{
   country= 'Country Name';
 
   backgrounds!: sourceData[];
+  selectedBackground: object | undefined;
   visionIntro = '';
   visions!: sourceData[];
   selectedVisions = [];
   currentStates!: sourceData[];
+  selectedCurrentState: object | undefined;
   goalsIntro = '';
   goals!: sourceData[];
   selectedGoals = [];
@@ -60,7 +62,9 @@ export class AppComponent implements OnInit{
   steps!: dataGrouper[];
   selectedSteps:any[] = [];
   projects!: sourceData[];
+  selectedProject: object | undefined;
   closings!: sourceData[];
+  selectedClosing: object | undefined;
 
   roadmap: string = '';
   roadmapStart: Date = new Date('2022-01-01');
@@ -166,12 +170,16 @@ export class AppComponent implements OnInit{
 
   change(section: string, event: any) {
     if(event.isUserInput) {
-      if (event.source.value == 'Not applicable') {
-        this.replaceSection(section, '');
-      } else {
-        this.replaceSection(section, `<h2>${section.replace('-',' ')}</h2><p>${event.source.value}</p>`);
-        this.nameChanged()
-      }
+      this.updateFromData(section, event.source.value);
+    }
+  }
+
+  updateFromData(section: string, content: any) {
+    if (content.text == 'Not applicable') {
+      this.replaceSection(section, '');
+    } else {
+      this.replaceSection(section, `<h2>${section.replace('-',' ')}</h2><p>${content.text}</p>`);
+      this.nameChanged()
     }
   }
 
@@ -295,8 +303,85 @@ export class AppComponent implements OnInit{
     });
   }
 
-  dateToTimestamp(date: Date) {
-    return (Math.floor(date.getTime() / 1000));
+  dateToTimestamp(datep: any) {
+    return (Math.floor(datep.getTime() / 1000));
+  }
+
+  export() {
+    const data = {
+      country: this.country,
+      roadmapStart: this.roadmapStart,
+      roadmapEnd: this.roadmapEnd,
+      selectedBackground: this.selectedBackground,
+      selectedVisions: this.selectedVisions,
+      selectedCurrentState: this.selectedCurrentState,
+      selectedGoals: this.selectedGoals,
+      selectedClinicalFocus: this.selectedClinicalFocus,
+      selectedSteps: this.selectedSteps,
+      selectedProject: this.selectedProject,
+      selectedClosing: this.selectedClosing
+    }
+    this.downloadJson(data);
+  }
+
+  downloadJson(myJson: object){
+    var sJson = JSON.stringify(myJson);
+    var element = document.createElement('a');
+    element.setAttribute('href', "data:text/json;charset=UTF-8," + encodeURIComponent(sJson));
+    element.setAttribute('download', "primer-server-task.json");
+    element.style.display = 'none';
+    document.body.appendChild(element);
+    element.click(); // simulate click
+    document.body.removeChild(element);
+  }
+
+  uploadFile(event: any) {
+    if (event.target.files.length !== 1) {
+      console.error('No file selected');
+    } else {
+      const reader = new FileReader();
+      reader.onloadend = (e) => {
+        if (reader.result) {
+          const uploadedVersion = JSON.parse(reader.result?.toString());
+          console.log(uploadedVersion);
+          this.roadmapStart = new Date(uploadedVersion.roadmapStart),
+          this.roadmapEnd = new Date(uploadedVersion.roadmapEnd),
+          this.selectedBackground = uploadedVersion.selectedBackground;
+          this.updateFromData('Background', this.selectedBackground);
+          this.selectedVisions = uploadedVersion.selectedVisions;
+          this.changeVision();
+          this.selectedCurrentState = uploadedVersion.selectedCurrentState;
+          this.updateFromData('Current-state', this.selectedCurrentState);
+          this.selectedGoals = uploadedVersion.selectedGoals;
+          this.changeGoals();
+          this.selectedClinicalFocus = uploadedVersion.selectedClinicalFocus;
+          this.changeClinicalFocus();
+
+          uploadedVersion.selectedSteps.forEach( (loopStep: any)  => { // Heal dates (string -> date)
+            loopStep.dateStart = new Date(loopStep.dateStart);
+            loopStep.dateEnd = new Date(loopStep.dateEnd);
+          });
+          this.selectedSteps = uploadedVersion.selectedSteps;
+          this.changeSteps();
+          
+          this.selectedProject = uploadedVersion.selectedProject;
+          this.updateFromData('Implementation-projects', this.selectedProject);
+          this.selectedClosing = uploadedVersion.selectedClosing;
+          this.updateFromData('Closing-remarks', this.selectedClosing);
+          this.country = uploadedVersion.country;
+          this.nameChanged();
+        }
+      };
+      reader.readAsText(event.target.files[0]);
+    }
+  }
+
+  compareOptions(object1: any, object2: any) {
+    return object1 && object2 && object1.opSelector == object2.opSelector;
+  }
+
+  compareOptionsSteps(object1: any, object2: any) {
+    return object1 && object2 && object1.step.opSelector == object2.step.opSelector;
   }
 
 }
@@ -350,14 +435,19 @@ export class TimelineDialog {
 @Component({
   selector: 'gantt-dialog',
   templateUrl: 'gantt-dialog.html',
+  providers: [GanttPrintService]
 })
 export class GanttDialog {
   constructor(
     public dialogRef: MatDialogRef<GanttDialog>,
+    private printService: GanttPrintService,
     @Inject(MAT_DIALOG_DATA) public data: any,
   ) {}
 
   onNoClick(): void {
     this.dialogRef.close();
+  }
+  print(name: string) {
+    this.printService.print(name);
   }
 }
