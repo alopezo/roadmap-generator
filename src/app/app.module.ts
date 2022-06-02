@@ -23,6 +23,7 @@ import { MzdTimelineModule } from 'ngx-mzd-timeline';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgxGanttModule, GANTT_GLOBAL_CONFIG } from '@worktile/gantt';
 import { GanttChartComponent } from './gantt-chart/gantt-chart.component';
+import { EditorSingleComponent } from './editor-single/editor-single.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { GanttChartComponent } from './gantt-chart/gantt-chart.component';
     StepsDatesDialog,
     TimelineDialog,
     GanttDialog,
-    GanttChartComponent
+    GanttChartComponent,
+    EditorSingleComponent
   ],
   imports: [
     BrowserModule,

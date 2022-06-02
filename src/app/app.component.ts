@@ -10,7 +10,6 @@ import {clinicalFocusIntro, clinicalFocus} from './roadmap-content/clinical-focu
 import {steps, stepsIntro} from './roadmap-content/steps';
 import {projects} from './roadmap-content/projects';
 import {closings} from './roadmap-content/closing';
-import { GanttItem, GanttPrintService } from '@worktile/gantt';
 
 declare var anime: any;  
 
@@ -276,17 +275,6 @@ export class AppComponent implements OnInit{
   }
 
   openGanttDialog(): void {
-    const items: GanttItem[] = [
-      { id: '000000', title: 'Task 0', start: 1627729997, end: 1628421197 },
-      { id: '000001', title: 'Task 1', start: 1617361997, end: 1625483597 }
-    ];
-
-    let stepsList: GanttItem[] = [];
-    this.selectedSteps.forEach( step => {
-      let loopItem = { id: step.step.opSelector, title: step.step.opSelector, start: this.dateToTimestamp(step.dateStart), end: this.dateToTimestamp(step.dateEnd) }
-      stepsList.push(loopItem);
-    });
-
     const dialogRef = this.dialog.open(GanttDialog, {
       width: '100%',
       height: '90%',
@@ -294,8 +282,7 @@ export class AppComponent implements OnInit{
         country: this.country,
         selectedSteps: this.selectedSteps, 
         roadmapStart: this.dateToTimestamp(this.roadmapStart), 
-        roadmapEnd: this.dateToTimestamp(this.roadmapEnd),
-        items: stepsList
+        roadmapEnd: this.dateToTimestamp(this.roadmapEnd)
       },
     });
 
@@ -435,19 +422,14 @@ export class TimelineDialog {
 @Component({
   selector: 'gantt-dialog',
   templateUrl: 'gantt-dialog.html',
-  providers: [GanttPrintService]
 })
 export class GanttDialog {
   constructor(
     public dialogRef: MatDialogRef<GanttDialog>,
-    private printService: GanttPrintService,
     @Inject(MAT_DIALOG_DATA) public data: any,
   ) {}
 
   onNoClick(): void {
     this.dialogRef.close();
-  }
-  print(name: string) {
-    this.printService.print(name);
   }
 }
