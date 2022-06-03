@@ -28,6 +28,9 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
+      <button mat-icon-button color="primary" (click)="openBackgroundsEditor()" [disabled]="!selectedBackground">
+        <mat-icon>edit</mat-icon>
+      </button>
       <mat-form-field appearance="fill" class="selectorsControl">
         <mat-label>Vision</mat-label>
         <mat-select [(ngModel)]="selectedVisions" [compareWith]="compareOptions" name="selectedVisions" multiple>
@@ -39,7 +42,7 @@
       <mat-form-field appearance="fill" class="selectorsControl">
         <mat-label>Current state</mat-label>
         <mat-select [(ngModel)]="selectedCurrentState" [compareWith]="compareOptions">
-          <mat-option value="Not applicable" (onSelectionChange)="change('Current-state', $event)">
+          <mat-option value="" (onSelectionChange)="change('Current-state', $event)">
             Not applicable
           </mat-option>
           <mat-option *ngFor="let currentStateSource of currentStates" [value]="currentStateSource" (onSelectionChange)="change('Current-state', $event)">
@@ -47,6 +50,9 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
+      <button mat-icon-button color="primary" (click)="openCurrentStateEditor()" [disabled]="!selectedCurrentState">
+        <mat-icon>edit</mat-icon>
+      </button>
       <mat-form-field appearance="fill" class="selectorsControl">
         <mat-label>Goals</mat-label>
         <mat-select [(ngModel)]="selectedGoals" [compareWith]="compareOptions" name="selectedGoals" multiple>
@@ -79,7 +85,7 @@
       <mat-form-field appearance="fill" class="selectorsControl">
         <mat-label>Implementation projects</mat-label>
         <mat-select [(ngModel)]="selectedProject" [compareWith]="compareOptions">
-          <mat-option value="Not applicable" (onSelectionChange)="change('Implementation-projects', $event)">
+          <mat-option value="" (onSelectionChange)="change('Implementation-projects', $event)">
             Not applicable
           </mat-option>
           <mat-option *ngFor="let project of projects" [value]="project" (onSelectionChange)="change('Implementation-projects', $event)">
@@ -87,10 +93,13 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
+      <button mat-icon-button color="primary" (click)="openProjectsEditor()" [disabled]="!selectedProject">
+        <mat-icon>edit</mat-icon>
+      </button>
       <mat-form-field appearance="fill" class="selectorsControl">
         <mat-label>Closing remarks</mat-label>
         <mat-select [(ngModel)]="selectedClosing" [compareWith]="compareOptions">
-          <mat-option value="Not applicable" (onSelectionChange)="change('Closing-remarks', $event)">
+          <mat-option value="" (onSelectionChange)="change('Closing-remarks', $event)">
             Not applicable
           </mat-option>
           <mat-option *ngFor="let closing of closings" [value]="closing" (onSelectionChange)="change('Closing-remarks', $event)">
@@ -98,6 +107,9 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
+      <button mat-icon-button color="primary" (click)="openClosingEditor()" [disabled]="!selectedClosing">
+        <mat-icon>edit</mat-icon>
+      </button>
     </div>
   </mat-grid-tile>
   <mat-grid-tile  colspan="2">

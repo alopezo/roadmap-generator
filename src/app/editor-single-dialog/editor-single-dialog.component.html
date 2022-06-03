@@ -1,0 +1,8 @@
+<h1 mat-dialog-title>Editor single</h1>
+<div mat-dialog-content>
+  <!-- <app-editor-single [text]="data.text"></app-editor-single> -->
+  <ckeditor [editor]="Editor" [(ngModel)]="data.text"></ckeditor>
+</div>
+<div mat-dialog-actions>
+  <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Close</button>
+</div>

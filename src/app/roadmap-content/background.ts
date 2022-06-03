@@ -6,8 +6,8 @@ export const backgrounds = [
       team and with patients, both locally and across borders, to improve patient outcomes. Further, stakeholders can use
       SNOMED CT in health data and analytics platforms for clinical analytics, population analytics, management analytics,
       clinical research, applied research, and other research activities to improve health care. <br>
-      To achieve the full potential of SNOMED CT in <span class='country'></span>,  it must be widely implemented in well 
-      designed systems. This document describes the roadmap for SNOMED CT adoption in <span class='country'></span>.`
+      To achieve the full potential of SNOMED CT in <span class='country'>COUNTRY</span>,  it must be widely implemented in well 
+      designed systems. This document describes the roadmap for SNOMED CT adoption in <span class='country'>COUNTRY</span>.`
     },
     {
       opSelector: "Long",

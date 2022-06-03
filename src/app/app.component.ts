@@ -10,6 +10,10 @@ import {clinicalFocusIntro, clinicalFocus} from './roadmap-content/clinical-focu
 import {steps, stepsIntro} from './roadmap-content/steps';
 import {projects} from './roadmap-content/projects';
 import {closings} from './roadmap-content/closing';
+import { EditorSingleDialogComponent } from './editor-single-dialog/editor-single-dialog.component';
+import { StepsDatesDialog } from './steps-dates-dialog/steps-dates-dialog';
+import { GanttDialog } from './gantt-dialog/gantt-dialog';
+import { TimelineDialog } from './timeline-dialog/timeline-dialog';
 
 declare var anime: any;  
 
@@ -45,12 +49,12 @@ export class AppComponent implements OnInit{
   country= 'Country Name';
 
   backgrounds!: sourceData[];
-  selectedBackground: object | undefined;
+  selectedBackground: any | undefined;
   visionIntro = '';
   visions!: sourceData[];
   selectedVisions = [];
   currentStates!: sourceData[];
-  selectedCurrentState: object | undefined;
+  selectedCurrentState: any | undefined;
   goalsIntro = '';
   goals!: sourceData[];
   selectedGoals = [];
@@ -61,9 +65,9 @@ export class AppComponent implements OnInit{
   steps!: dataGrouper[];
   selectedSteps:any[] = [];
   projects!: sourceData[];
-  selectedProject: object | undefined;
+  selectedProject: any | undefined;
   closings!: sourceData[];
-  selectedClosing: object | undefined;
+  selectedClosing: any | undefined;
 
   roadmap: string = '';
   roadmapStart: Date = new Date('2022-01-01');
@@ -174,7 +178,7 @@ export class AppComponent implements OnInit{
   }
 
   updateFromData(section: string, content: any) {
-    if (content.text == 'Not applicable') {
+    if (!content || !content.text || content.text == 'Not applicable') {
       this.replaceSection(section, '');
     } else {
       this.replaceSection(section, `<h2>${section.replace('-',' ')}</h2><p>${content.text}</p>`);
@@ -290,6 +294,70 @@ export class AppComponent implements OnInit{
     });
   }
 
+  openBackgroundsEditor(): void {
+    const dialogRef = this.dialog.open(EditorSingleDialogComponent, {
+      width: '100%',
+      height: '90%',
+      data: {
+        text: this.selectedBackground.text
+      },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.selectedBackground.text = result.text.replace(/COUNTRY/g,"<span class='country'>COUNTRY</span>");
+      this.updateFromData('Background', this.selectedBackground);
+      this.nameChanged();
+    });
+  }
+
+  openCurrentStateEditor(): void {
+    const dialogRef = this.dialog.open(EditorSingleDialogComponent, {
+      width: '100%',
+      height: '90%',
+      data: {
+        text: this.selectedCurrentState.text
+      },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.selectedCurrentState.text = result.text.replace(/COUNTRY/g,"<span class='country'>COUNTRY</span>");
+      this.updateFromData('Current-state', this.selectedCurrentState);
+      this.nameChanged();
+    });
+  }
+
+  openProjectsEditor(): void {
+    const dialogRef = this.dialog.open(EditorSingleDialogComponent, {
+      width: '100%',
+      height: '90%',
+      data: {
+        text: this.selectedProject.text
+      },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.selectedProject.text = result.text.replace(/COUNTRY/g,"<span class='country'>COUNTRY</span>");
+      this.updateFromData('Implementation-projects', this.selectedProject);
+      this.nameChanged();
+    });
+  }
+
+  openClosingEditor(): void {
+    const dialogRef = this.dialog.open(EditorSingleDialogComponent, {
+      width: '100%',
+      height: '90%',
+      data: {
+        text: this.selectedClosing.text
+      },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.selectedClosing.text = result.text.replace(/COUNTRY/g,"<span class='country'>COUNTRY</span>");
+      this.updateFromData('Closing-remarks', this.selectedClosing);
+      this.nameChanged();
+    });
+  }
+
   dateToTimestamp(datep: any) {
     return (Math.floor(datep.getTime() / 1000));
   }
@@ -379,57 +447,3 @@ export class AppComponent implements OnInit{
   styles: [],
 })
 export class AppSnackComponent {}
-
-@Component({
-  selector: 'steps-dates-dialog',
-  templateUrl: 'setps-dates-dialog.html',
-  styleUrls: ['setps-dates-dialog.css']
-})
-export class StepsDatesDialog {
-  constructor(
-    public dialogRef: MatDialogRef<StepsDatesDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-  ) {}
-
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
-}
-
-@Component({
-  selector: 'timeline-dialog',
-  templateUrl: 'timeline-dialog.html',
-})
-export class TimelineDialog {
-  faFlagCheckered = faFlagCheckered;
-  faCheck = faCheck;
-  faClipboardList = faClipboardList;
-  faNetworkWired = faNetworkWired;
-  faGraduationCap = faGraduationCap;
-  faUsers = faUsers;
-  faList = faList;
-  faEdit = faEdit;
-  constructor(
-    public dialogRef: MatDialogRef<TimelineDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-  ) {}
-
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
-}
-
-@Component({
-  selector: 'gantt-dialog',
-  templateUrl: 'gantt-dialog.html',
-})
-export class GanttDialog {
-  constructor(
-    public dialogRef: MatDialogRef<GanttDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-  ) {}
-
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
-}

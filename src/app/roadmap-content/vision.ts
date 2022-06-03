@@ -3,7 +3,7 @@ export const visions = [
     {
     opSelector: "Better health",
     text: `- We need to establish what a 'quality of care model' using clinical terminology for
-    all citizens in will look like in <span class='country'></span> in 2022. The goal of this strategy is to reinforce and enable,
+    all citizens in will look like in <span class='country'>COUNTRY</span> in 2022. The goal of this strategy is to reinforce and enable,
     quality care and cost effective delivery, through the adoption of standardised clinical
     terminology across the country.`
     },
