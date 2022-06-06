@@ -62,6 +62,12 @@ mat-grid-list {
     bottom:   0px;
 }
 
+.clear-action {
+    position: absolute;
+    right:    620px;
+    bottom:   0px;
+}
+
 .stepsFormControl {
     width: 40%; 
     margin: 10px;
@@ -69,4 +75,12 @@ mat-grid-list {
 
 .selectorsControl {
     width: 80%;
+}
+
+::ng-deep.mat-menu-panel {
+    max-width: none !important;
+}
+
+.examplesMenu {
+    width: 600px;
 }

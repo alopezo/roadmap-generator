@@ -2,9 +2,12 @@
   <img src="https://www.snomed.org/SNOMED/media/SNOMED/other/brand-mark.png" height="60px">
   <span id="title">SNOMED CT Implementation Roadmap Generator</span>
   <span class="example-spacer"></span>
-  
+  <button mat-raised-button color="accent" [matMenuTriggerFor]="examplesMenu">Examples</button>
+  <mat-menu #examplesMenu="matMenu">
+    <button mat-menu-item (click)="loadJsonExample('example1.json')">Snomedland: Roadmap oriented to clinical benefit</button>
+    <button mat-menu-item (click)="loadJsonExample('example2.json')">Republic of SNOMED: Roadmap oriented to interoperability</button>
+  </mat-menu>
   <a href="https://github.com/alopezo/coding-demo-template-ng" target="_blank" mat-raised-button color="accent"><mat-icon>info</mat-icon></a>
-
 </mat-toolbar>
 <mat-grid-list cols="4" rowHeight="100%">
   <mat-grid-tile colspan="2">
@@ -39,6 +42,9 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
+      <button mat-icon-button color="primary" (click)="openVisionEditor()" [disabled]="!selectedVisions.length">
+        <mat-icon>edit</mat-icon>
+      </button>
       <mat-form-field appearance="fill" class="selectorsControl">
         <mat-label>Current state</mat-label>
         <mat-select [(ngModel)]="selectedCurrentState" [compareWith]="compareOptions">
@@ -61,6 +67,9 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
+      <button mat-icon-button color="primary" (click)="openGoalsEditor()" [disabled]="!selectedGoals.length">
+        <mat-icon>edit</mat-icon>
+      </button>
       <mat-form-field appearance="fill" class="selectorsControl">
         <mat-label>Clinical focus</mat-label>
         <mat-select [(ngModel)]="selectedClinicalFocus" [compareWith]="compareOptions" name="selectedClinicalFocus" multiple>
@@ -69,6 +78,9 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
+      <button mat-icon-button color="primary" (click)="openFocusEditor()" [disabled]="!selectedClinicalFocus.length">
+        <mat-icon>edit</mat-icon>
+      </button>
       <mat-form-field appearance="fill" class="selectorsControl">
         <mat-label>Roadmap Steps</mat-label>
         <mat-select [(ngModel)]="selectedSteps" name="selectedSteps" [compareWith]="compareOptionsSteps" multiple>
@@ -118,6 +130,7 @@
     <button class="timeline-action" mat-flat-button color="primary" (click)="openTimelineDialog()">Timeline</button>
     <button class="gantt-action" mat-flat-button color="primary" (click)="openGanttDialog()">Gantt</button>
     <button class="export-action" mat-flat-button color="primary" (click)="export()">Export</button>
+    <button class="clear-action" mat-flat-button color="primary" (click)="clear()">Clear</button>
 
     <button class="import-action" type="button" mat-raised-button color="primary" (click)="fileInput.click()">Import</button>
     <input hidden (change)="uploadFile($event)" #fileInput type="file" id="file">

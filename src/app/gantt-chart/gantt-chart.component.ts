@@ -21,7 +21,24 @@ export class GanttChartComponent implements OnInit {
   ngOnInit(): void {
     this.ganttData = [];
     this.selectedSteps.forEach( (step: any) => {
-      let loopItem = { id: step.step.opSelector, title: step.step.opSelector, start: this.dateToTimestamp(step.dateStart), end: this.dateToTimestamp(step.dateEnd) }
+      let loopItem:any = { 
+        id: step.step.opSelector, 
+        title: step.step.opSelector, 
+        start: this.dateToTimestamp(step.dateStart), 
+        end: this.dateToTimestamp(step.dateEnd),
+        children: []
+      };
+      if (step.step.milestones) {
+        step.step.milestones.forEach((loopMilestone:any) => {
+          let milestone = { 
+            id: step.step.opSelector+loopMilestone.name, 
+            title: loopMilestone.name, 
+            start: this.dateToTimestamp(loopMilestone.date), 
+            end: this.dateToTimestamp(loopMilestone.date) 
+          };
+          loopItem.children.push(milestone);
+        })
+      }
       this.ganttData.push(loopItem);
     });
   }

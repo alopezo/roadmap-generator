@@ -5,6 +5,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent, AppSnackComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+
 
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatMenuModule} from '@angular/material/menu';
@@ -23,9 +25,9 @@ import { MzdTimelineModule } from 'ngx-mzd-timeline';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgxGanttModule, GANTT_GLOBAL_CONFIG } from '@worktile/gantt';
 import { GanttChartComponent } from './gantt-chart/gantt-chart.component';
-import { EditorSingleComponent } from './editor-single/editor-single.component';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { EditorSingleDialogComponent } from './editor-single-dialog/editor-single-dialog.component';
+import { EditorListDialogComponent } from './editor-list-dialog/editor-list-dialog.component';
 import { StepsDatesDialog } from './steps-dates-dialog/steps-dates-dialog';
 import { GanttDialog } from './gantt-dialog/gantt-dialog';
 import { TimelineDialog } from './timeline-dialog/timeline-dialog';
@@ -38,8 +40,8 @@ import { TimelineDialog } from './timeline-dialog/timeline-dialog';
     TimelineDialog,
     GanttDialog,
     GanttChartComponent,
-    EditorSingleComponent,
-    EditorSingleDialogComponent
+    EditorSingleDialogComponent,
+    EditorListDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -62,7 +64,8 @@ import { TimelineDialog } from './timeline-dialog/timeline-dialog';
     MzdTimelineModule,
     FontAwesomeModule,
     NgxGanttModule,
-    CKEditorModule
+    CKEditorModule,
+    HttpClientModule
   ],
   providers: [
     {

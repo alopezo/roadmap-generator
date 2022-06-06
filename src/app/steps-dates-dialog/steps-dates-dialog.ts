@@ -1,5 +1,6 @@
 import {Component, OnInit, Inject} from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 @Component({
     selector: 'steps-dates-dialog',
@@ -7,6 +8,8 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
     styleUrls: ['setps-dates-dialog.css']
   })
   export class StepsDatesDialog {
+    public Editor = ClassicEditor;
+
     constructor(
       public dialogRef: MatDialogRef<StepsDatesDialog>,
       @Inject(MAT_DIALOG_DATA) public data: any,
@@ -14,5 +17,12 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
   
     onNoClick(): void {
       this.dialogRef.close();
+    }
+
+    addMilestone(step:any) {
+      if (!step.milestones) {
+        step.milestones = [];
+      }
+      step.milestones.push({ name: 'New milestone', text: '', date: new Date() })
     }
   }

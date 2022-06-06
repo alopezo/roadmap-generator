@@ -1,7 +1,10 @@
 <h1 mat-dialog-title>Editor single</h1>
 <div mat-dialog-content>
   <!-- <app-editor-single [text]="data.text"></app-editor-single> -->
-  <ckeditor [editor]="Editor" [(ngModel)]="data.text"></ckeditor>
+  <div *ngFor="let item of data.selectedOptions">
+    <h3>{{item.opSelector}}</h3>
+    <ckeditor [editor]="Editor" [(ngModel)]="item.text"></ckeditor>
+  </div>
 </div>
 <div mat-dialog-actions>
   <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Save</button>

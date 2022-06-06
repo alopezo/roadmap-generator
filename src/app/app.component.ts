@@ -11,9 +11,11 @@ import {steps, stepsIntro} from './roadmap-content/steps';
 import {projects} from './roadmap-content/projects';
 import {closings} from './roadmap-content/closing';
 import { EditorSingleDialogComponent } from './editor-single-dialog/editor-single-dialog.component';
+import { EditorListDialogComponent } from './editor-list-dialog/editor-list-dialog.component';
 import { StepsDatesDialog } from './steps-dates-dialog/steps-dates-dialog';
 import { GanttDialog } from './gantt-dialog/gantt-dialog';
 import { TimelineDialog } from './timeline-dialog/timeline-dialog';
+import { HttpClient } from '@angular/common/http';
 
 declare var anime: any;  
 
@@ -73,7 +75,9 @@ export class AppComponent implements OnInit{
   roadmapStart: Date = new Date('2022-01-01');
   roadmapEnd: Date = new Date('2022-12-31');
 
-  constructor(readonly snackBar: MatSnackBar, public dialog: MatDialog) {}
+  constructor(readonly snackBar: MatSnackBar, 
+              public dialog: MatDialog,
+              private http: HttpClient) {}
 
   ngOnInit(): void {
     this.roadmap = `
@@ -158,15 +162,39 @@ export class AppComponent implements OnInit{
           stepsText = stepsText + `<li>${group}<ul>`;
           this.selectedSteps.forEach((step: any) => {
             if (step.group == group) {
-              stepsText = stepsText + `<li>${step.step.opSelector}: ${step.step.text}</li>`;
+              stepsText = stepsText + `<li>${step.step.opSelector}`;
+              if (step.dateStart && step.dateEnd) {
+                stepsText = stepsText + `(${step.dateStart.toISOString().split('T')[0]} to ${step.dateEnd.toISOString().split('T')[0]})`;
+              }
+              stepsText = stepsText + `: ${step.step.text}`;
+              if (step.step.milestones && step.step.milestones.length > 0) {
+                const sortedMilestones = step.step.milestones.sort(function(a:any,b:any){
+                  var key1 = a.date;
+                  var key2 = b.date;
+                  if (key1 < key2) {
+                      return -1;
+                  } else if (key1 == key2) {
+                      return 0;
+                  } else {
+                      return 1;
+                  }
+                });
+                stepsText = stepsText + `<ul>`;
+                sortedMilestones.forEach( (milestone: any) => {
+                  stepsText = stepsText + `<li>${milestone.date.toISOString().split('T')[0]} - ${milestone.name}: ${milestone.text}</li>`;
+                });
+                stepsText = stepsText + `</ul>`;
+              }
+              stepsText = stepsText + `</li>`;
+
             }
           })
           stepsText = stepsText + `</ul></li>`;
         });
-        this.replaceSection('Clinical-Focus', `<h2>Clinical focus</h2>${stepsText}</ul><br><br>`);
+        this.replaceSection('Steps', `<h2>Implementation steps</h2>${stepsText}</ul><br><br>`);
         this.nameChanged()
       } else {
-        this.replaceSection('Clinical-Focus', '');
+        this.replaceSection('Steps', '');
       }
     }, 100);
   }
@@ -181,6 +209,7 @@ export class AppComponent implements OnInit{
     if (!content || !content.text || content.text == 'Not applicable') {
       this.replaceSection(section, '');
     } else {
+      // remove paragraph <p>? console.log(content.text)
       this.replaceSection(section, `<h2>${section.replace('-',' ')}</h2><p>${content.text}</p>`);
       this.nameChanged()
     }
@@ -248,6 +277,7 @@ export class AppComponent implements OnInit{
       this.selectedSteps = result.selectedSteps;
       this.roadmapStart = result.roadmapStart;
       this.roadmapEnd = result.roadmapEnd;
+      this.changeSteps();
     });
   }
 
@@ -301,6 +331,7 @@ export class AppComponent implements OnInit{
       data: {
         text: this.selectedBackground.text
       },
+      disableClose: true
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -317,6 +348,7 @@ export class AppComponent implements OnInit{
       data: {
         text: this.selectedCurrentState.text
       },
+      disableClose: true
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -333,6 +365,7 @@ export class AppComponent implements OnInit{
       data: {
         text: this.selectedProject.text
       },
+      disableClose: true
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -349,11 +382,72 @@ export class AppComponent implements OnInit{
       data: {
         text: this.selectedClosing.text
       },
+      disableClose: true
     });
 
     dialogRef.afterClosed().subscribe(result => {
       this.selectedClosing.text = result.text.replace(/COUNTRY/g,"<span class='country'>COUNTRY</span>");
       this.updateFromData('Closing-remarks', this.selectedClosing);
+      this.nameChanged();
+    });
+  }
+
+  openVisionEditor(): void {
+    const dialogRef = this.dialog.open(EditorListDialogComponent, {
+      width: '100%',
+      height: '90%',
+      data: {
+        selectedOptions: this.selectedVisions
+      },
+      disableClose: true
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      result.selectedOptions.forEach( (loopVision:any) => {
+        loopVision.text = loopVision.text.replace(/COUNTRY/g,"<span class='country'>COUNTRY</span>");
+      })
+      this.selectedVisions = result.selectedOptions;
+      this.changeVision();
+      this.nameChanged();
+    });
+  }
+
+  openGoalsEditor(): void {
+    const dialogRef = this.dialog.open(EditorListDialogComponent, {
+      width: '100%',
+      height: '90%',
+      data: {
+        selectedOptions: this.selectedGoals
+      },
+      disableClose: true
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      result.selectedOptions.forEach( (loopItem:any) => {
+        loopItem.text = loopItem.text.replace(/COUNTRY/g,"<span class='country'>COUNTRY</span>");
+      })
+      this.selectedGoals = result.selectedOptions;
+      this.changeGoals();
+      this.nameChanged();
+    });
+  }
+
+  openFocusEditor(): void {
+    const dialogRef = this.dialog.open(EditorListDialogComponent, {
+      width: '100%',
+      height: '90%',
+      data: {
+        selectedOptions: this.selectedClinicalFocus
+      },
+      disableClose: true
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      result.selectedOptions.forEach( (loopItem:any) => {
+        loopItem.text = loopItem.text.replace(/COUNTRY/g,"<span class='country'>COUNTRY</span>");
+      })
+      this.selectedClinicalFocus = result.selectedOptions;
+      this.changeClinicalFocus();
       this.nameChanged();
     });
   }
@@ -390,6 +484,29 @@ export class AppComponent implements OnInit{
     document.body.removeChild(element);
   }
 
+  clear() {
+    this.roadmapStart = new Date(),
+    this.roadmapEnd = new Date(),
+    this.selectedBackground = null;
+    this.updateFromData('Background', this.selectedBackground);
+    this.selectedVisions = [];
+    this.changeVision();
+    this.selectedCurrentState = null;
+    this.updateFromData('Current-state', this.selectedCurrentState);
+    this.selectedGoals = [];
+    this.changeGoals();
+    this.selectedClinicalFocus = [];
+    this.changeClinicalFocus();
+    this.selectedSteps = [];
+    this.changeSteps();
+    this.selectedProject = null;
+    this.updateFromData('Implementation-projects', this.selectedProject);
+    this.selectedClosing = null;
+    this.updateFromData('Closing-remarks', this.selectedClosing);
+    this.country = 'Country Name';
+    this.nameChanged();
+  }
+
   uploadFile(event: any) {
     if (event.target.files.length !== 1) {
       console.error('No file selected');
@@ -398,37 +515,46 @@ export class AppComponent implements OnInit{
       reader.onloadend = (e) => {
         if (reader.result) {
           const uploadedVersion = JSON.parse(reader.result?.toString());
-          console.log(uploadedVersion);
-          this.roadmapStart = new Date(uploadedVersion.roadmapStart),
-          this.roadmapEnd = new Date(uploadedVersion.roadmapEnd),
-          this.selectedBackground = uploadedVersion.selectedBackground;
-          this.updateFromData('Background', this.selectedBackground);
-          this.selectedVisions = uploadedVersion.selectedVisions;
-          this.changeVision();
-          this.selectedCurrentState = uploadedVersion.selectedCurrentState;
-          this.updateFromData('Current-state', this.selectedCurrentState);
-          this.selectedGoals = uploadedVersion.selectedGoals;
-          this.changeGoals();
-          this.selectedClinicalFocus = uploadedVersion.selectedClinicalFocus;
-          this.changeClinicalFocus();
-
-          uploadedVersion.selectedSteps.forEach( (loopStep: any)  => { // Heal dates (string -> date)
-            loopStep.dateStart = new Date(loopStep.dateStart);
-            loopStep.dateEnd = new Date(loopStep.dateEnd);
-          });
-          this.selectedSteps = uploadedVersion.selectedSteps;
-          this.changeSteps();
-          
-          this.selectedProject = uploadedVersion.selectedProject;
-          this.updateFromData('Implementation-projects', this.selectedProject);
-          this.selectedClosing = uploadedVersion.selectedClosing;
-          this.updateFromData('Closing-remarks', this.selectedClosing);
-          this.country = uploadedVersion.country;
-          this.nameChanged();
+          this.updateAllFieldsFromData(uploadedVersion);
         }
       };
       reader.readAsText(event.target.files[0]);
     }
+  }
+
+  updateAllFieldsFromData(uploadedVersion: any) {
+    this.roadmapStart = new Date(uploadedVersion.roadmapStart),
+    this.roadmapEnd = new Date(uploadedVersion.roadmapEnd),
+    this.selectedBackground = uploadedVersion.selectedBackground;
+    this.updateFromData('Background', this.selectedBackground);
+    this.selectedVisions = uploadedVersion.selectedVisions;
+    this.changeVision();
+    this.selectedCurrentState = uploadedVersion.selectedCurrentState;
+    this.updateFromData('Current-state', this.selectedCurrentState);
+    this.selectedGoals = uploadedVersion.selectedGoals;
+    this.changeGoals();
+    this.selectedClinicalFocus = uploadedVersion.selectedClinicalFocus;
+    this.changeClinicalFocus();
+
+    uploadedVersion.selectedSteps.forEach( (loopStep: any)  => { // Heal dates (string -> date)
+      loopStep.dateStart = new Date(loopStep.dateStart);
+      loopStep.dateEnd = new Date(loopStep.dateEnd);
+      if (loopStep.step.milestones) {
+        loopStep.step.milestones.forEach( (loopMilestone:any) => {
+          loopMilestone.date = new Date(loopMilestone.date);
+        });
+      }
+    });
+
+    this.selectedSteps = uploadedVersion.selectedSteps;
+    this.changeSteps();
+    
+    this.selectedProject = uploadedVersion.selectedProject;
+    this.updateFromData('Implementation-projects', this.selectedProject);
+    this.selectedClosing = uploadedVersion.selectedClosing;
+    this.updateFromData('Closing-remarks', this.selectedClosing);
+    this.country = uploadedVersion.country;
+    this.nameChanged();
   }
 
   compareOptions(object1: any, object2: any) {
@@ -437,6 +563,12 @@ export class AppComponent implements OnInit{
 
   compareOptionsSteps(object1: any, object2: any) {
     return object1 && object2 && object1.step.opSelector == object2.step.opSelector;
+  }
+
+  loadJsonExample(filename: string) {
+    this.http.get('assets/examples/'+filename).subscribe(data => {
+      this.updateAllFieldsFromData(data);
+     });
   }
 
 }
