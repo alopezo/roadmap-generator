@@ -14,7 +14,7 @@
     <div class="text-inside-grid" style="width: 100%;">
       <h2>Select components</h2>
       <mat-form-field class="example-form-field" appearance="fill" class="selectorsControl">
-        <mat-label>Country Name</mat-label>
+        <mat-label>Country name</mat-label>
         <input matInput type="text" [(ngModel)]="country" name="country" (ngModelChange)="nameChanged()">
         <button *ngIf="country" matSuffix mat-icon-button aria-label="Clear" (click)="country=''">
           <mat-icon>close</mat-icon>
@@ -82,7 +82,7 @@
         <mat-icon>edit</mat-icon>
       </button>
       <mat-form-field appearance="fill" class="selectorsControl">
-        <mat-label>Roadmap Steps</mat-label>
+        <mat-label>Roadmap steps</mat-label>
         <mat-select [(ngModel)]="selectedSteps" name="selectedSteps" [compareWith]="compareOptionsSteps" multiple>
           <mat-optgroup *ngFor="let group of steps" [label]="group.group">
             <mat-option *ngFor="let step of group.options" [value]="{ group: group.group, step: step, date: '' }" (onSelectionChange)="changeSteps()">
@@ -125,17 +125,17 @@
     </div>
   </mat-grid-tile>
   <mat-grid-tile  colspan="2">
-    <div class="text-inside-grid" [innerHTML]="roadmap" id="roadmap-preview"></div>
+    <div class="text-inside-grid" [innerHTML]="roadmap | safe: 'html'" id="roadmap-preview"></div>
     <button class="word-action" mat-flat-button color="primary" (click)="saveToWord()">Export to Word</button>
     <button class="timeline-action" mat-flat-button color="primary" (click)="openTimelineDialog()">Timeline</button>
     <button class="gantt-action" mat-flat-button color="primary" (click)="openGanttDialog()">Gantt</button>
     <button class="export-action" mat-flat-button color="primary" (click)="export()">Export</button>
     <button class="clear-action" mat-flat-button color="primary" (click)="clear()">Clear</button>
-
     <button class="import-action" type="button" mat-raised-button color="primary" (click)="fileInput.click()">Import</button>
     <input hidden (change)="uploadFile($event)" #fileInput type="file" id="file">
-
-    <!-- <input class="import-action" type="file" name="files" mat-flat-button color="primary" (change)="uploadFile($event)" /> -->
   </mat-grid-tile>
+  <!-- <mat-grid-tile  colspan="2">
+    <app-gantt-chart [roadmapStart]="roadmapStart" [roadmapEnd]="roadmapEnd" [selectedSteps]="selectedSteps"></app-gantt-chart>
+  </mat-grid-tile> -->
 </mat-grid-list>
 <router-outlet></router-outlet>

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, OnChanges, Input, SimpleChanges } from '@angular/core';
 import { GanttItem, GanttPrintService } from '@worktile/gantt';
 
 
@@ -19,6 +19,16 @@ export class GanttChartComponent implements OnInit {
   constructor(private printService: GanttPrintService) { }
 
   ngOnInit(): void {
+    this.updateGantt();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    setTimeout(() => {
+      this.updateGantt();
+    }, 100);
+  }
+
+  updateGantt() {
     this.ganttData = [];
     this.selectedSteps.forEach( (step: any) => {
       let loopItem:any = { 

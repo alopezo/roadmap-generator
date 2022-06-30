@@ -16,6 +16,7 @@ import { StepsDatesDialog } from './steps-dates-dialog/steps-dates-dialog';
 import { GanttDialog } from './gantt-dialog/gantt-dialog';
 import { TimelineDialog } from './timeline-dialog/timeline-dialog';
 import { HttpClient } from '@angular/common/http';
+import { DomSanitizer } from '@angular/platform-browser';
 
 declare var anime: any;  
 
@@ -48,7 +49,7 @@ interface dataGrouper {
 })
 export class AppComponent implements OnInit{
   title = 'roadmap-generator';
-  country= 'Country Name';
+  country= 'Country name';
 
   backgrounds!: sourceData[];
   selectedBackground: any | undefined;
@@ -71,7 +72,7 @@ export class AppComponent implements OnInit{
   closings!: sourceData[];
   selectedClosing: any | undefined;
 
-  roadmap: string = '';
+  roadmap: any = '';
   roadmapStart: Date = new Date('2022-01-01');
   roadmapEnd: Date = new Date('2022-12-31');
 
@@ -80,7 +81,7 @@ export class AppComponent implements OnInit{
               private http: HttpClient) {}
 
   ngOnInit(): void {
-    this.roadmap = `
+    this.roadmap =`
       <h1><span class='country'></span>: SNOMED CT Implementation Roadmap</h1>
       <div class="Background"></div>
       <div class="Vision"></div>
@@ -127,7 +128,7 @@ export class AppComponent implements OnInit{
       if (this.selectedGoals.length > 0) {
         let goalsText = `<p>${this.goalsIntro}</p><ul>`;
         this.selectedGoals.forEach((goal: any) => {
-          goalsText = goalsText + `<li>${goal.text}</li>`;
+          goalsText = goalsText + `<li><b>${goal.opSelector}:</b> ${goal.text}</li>`;
         })
         this.replaceSection('Goals', `<h2>Goals</h2>${goalsText}</ul><br><br>`);
         this.nameChanged()
@@ -142,7 +143,7 @@ export class AppComponent implements OnInit{
       if (this.selectedClinicalFocus.length > 0) {
         let focusText = `<p>${this.clinicalFocusIntro}</p><ul>`;
         this.selectedClinicalFocus.forEach((focus: any) => {
-          focusText = focusText + `<li>${focus.opSelector}: ${focus.text}</li>`;
+          focusText = focusText + `<li><b>${focus.opSelector}:</b> ${focus.text}</li>`;
         })
         this.replaceSection('Clinical-Focus', `<h2>Clinical focus</h2>${focusText}</ul><br><br>`);
         this.nameChanged()
@@ -159,12 +160,12 @@ export class AppComponent implements OnInit{
         let groupsu =  [...new Set(groups)];
         let stepsText = `<p>${this.stepsIntro}</p><ul>`;
         groupsu.forEach( (group:any) => {
-          stepsText = stepsText + `<li>${group}<ul>`;
+          stepsText = stepsText + `<li><b>${group}</b><ul>`;
           this.selectedSteps.forEach((step: any) => {
             if (step.group == group) {
-              stepsText = stepsText + `<li>${step.step.opSelector}`;
+              stepsText = stepsText + `<li><b>${step.step.opSelector}</b>`;
               if (step.dateStart && step.dateEnd) {
-                stepsText = stepsText + `(${step.dateStart.toISOString().split('T')[0]} to ${step.dateEnd.toISOString().split('T')[0]})`;
+                stepsText = stepsText + ` (${step.dateStart.toISOString().split('T')[0]} to ${step.dateEnd.toISOString().split('T')[0]})`;
               }
               stepsText = stepsText + `: ${step.step.text}`;
               if (step.step.milestones && step.step.milestones.length > 0) {

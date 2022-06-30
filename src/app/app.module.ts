@@ -31,6 +31,7 @@ import { EditorListDialogComponent } from './editor-list-dialog/editor-list-dial
 import { StepsDatesDialog } from './steps-dates-dialog/steps-dates-dialog';
 import { GanttDialog } from './gantt-dialog/gantt-dialog';
 import { TimelineDialog } from './timeline-dialog/timeline-dialog';
+import { SafePipe } from './safe.pipe';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { TimelineDialog } from './timeline-dialog/timeline-dialog';
     GanttDialog,
     GanttChartComponent,
     EditorSingleDialogComponent,
-    EditorListDialogComponent
+    EditorListDialogComponent,
+    SafePipe
   ],
   imports: [
     BrowserModule,
