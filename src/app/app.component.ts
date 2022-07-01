@@ -76,6 +76,8 @@ export class AppComponent implements OnInit{
   roadmapStart: Date = new Date('2022-01-01');
   roadmapEnd: Date = new Date('2022-12-31');
 
+  opened: boolean = true;
+
   constructor(readonly snackBar: MatSnackBar, 
               public dialog: MatDialog,
               private http: HttpClient) {}
@@ -478,7 +480,7 @@ export class AppComponent implements OnInit{
     var sJson = JSON.stringify(myJson);
     var element = document.createElement('a');
     element.setAttribute('href', "data:text/json;charset=UTF-8," + encodeURIComponent(sJson));
-    element.setAttribute('download', "primer-server-task.json");
+    element.setAttribute('download', "roadmap.json");
     element.style.display = 'none';
     document.body.appendChild(element);
     element.click(); // simulate click

@@ -50,11 +50,14 @@
           <mat-datepicker-toggle matSuffix [for]="milestonePicker"></mat-datepicker-toggle>
           <mat-datepicker #milestonePicker></mat-datepicker>
         </mat-form-field>
+        <button mat-icon-button color="primary" (click)="removeMilestone(step.step, milestone.name)">
+          <mat-icon>remove_circle_outline</mat-icon>
+        </button>
         <ckeditor [editor]="Editor" [(ngModel)]="milestone.text"></ckeditor>
       </div>
     </div>
     </div>
 </div>
 <div mat-dialog-actions>
-  <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Save</button>
+  <button mat-flat-button color="primary" [mat-dialog-close]="data" cdkFocusInitial>Save</button>
 </div>

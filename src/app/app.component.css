@@ -32,42 +32,6 @@ mat-grid-list {
     overflow-y: scroll;
 }
 
-.word-action {
-    position: absolute;
-    right:    50px;
-    bottom:   0px;
-}
-
-.timeline-action {
-    position: absolute;
-    right:    200px;
-    bottom:   0px;
-}
-
-.gantt-action {
-    position: absolute;
-    right:    320px;
-    bottom:   0px;
-}
-
-.export-action {
-    position: absolute;
-    right:    420px;
-    bottom:   0px;
-}
-
-.import-action {
-    position: absolute;
-    right:    520px;
-    bottom:   0px;
-}
-
-.clear-action {
-    position: absolute;
-    right:    620px;
-    bottom:   0px;
-}
-
 .stepsFormControl {
     width: 40%; 
     margin: 10px;
@@ -83,4 +47,20 @@ mat-grid-list {
 
 .examplesMenu {
     width: 600px;
+}
+
+.rmsidenav {
+    width: 40%; 
+    min-width: 40%;
+    margin-left: 15px;
+}
+
+.nav-content {
+    height: 88vh;
+    margin-right: 15px;
+    margin-left: 15px;
+}
+
+h2 {
+    margin-top: 30px;
 }

@@ -20,6 +20,8 @@ import {MatInputModule} from '@angular/material/input';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
+import {MatSidenavModule} from '@angular/material/sidenav';
+import {MatDividerModule} from '@angular/material/divider';
 
 import { MzdTimelineModule } from 'ngx-mzd-timeline';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -67,7 +69,9 @@ import { SafePipe } from './safe.pipe';
     FontAwesomeModule,
     NgxGanttModule,
     CKEditorModule,
-    HttpClientModule
+    HttpClientModule,
+    MatSidenavModule,
+    MatDividerModule
   ],
   providers: [
     {
