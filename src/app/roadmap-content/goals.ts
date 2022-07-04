@@ -17,14 +17,16 @@ export const goals = [
     },
     {
     opSelector: "Clinician support",
-    text: `<p>SNOMED CT will be defined as the standard for represeting clinical knowledge in decision support systems. 
+    text: `<p>SNOMED CT will be defined as the standard for representing clinical knowledge in decision support systems. 
     Clinical decision support tools link patient information to clinical knowledge, protocols or guidelines, providing alerts and advice 
     to clinicians during the care of the patient. SNOMED CT provides the level of detail needed to encode knowledge rules, conditions and actions.
     Using SNOMED CT it's possible to share knowledge databases and access a wide market of vendors that provide services using the standard.</p>`
     },
     {
     opSelector: "Population health",
-    text: `<p>Data analysts supporting population health will be able to ...</p>`
+    text: `<p>Data analysts supporting population health will have detailed, high quality and up to date information. Direct data entry 
+    by clinicians ensures that the information goes directly from the point of care to the epidemiological analysis avoiding 
+    transcriptions and manual classification steps.</p>`
     },
     {
     opSelector: "Clinical research",
