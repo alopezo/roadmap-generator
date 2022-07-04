@@ -25,8 +25,9 @@ export const goals = [
     {
     opSelector: "Population health",
     text: `<p>Data analysts supporting population health will have detailed, high quality and up to date information. Direct data entry 
-    by clinicians ensures that the information goes directly from the point of care to the epidemiological analysis avoiding 
-    transcriptions and manual classification steps.</p>`
+    by clinicians using SNOMED CT ensures that the information will travel directly from the point of care to the epidemiological 
+    analysis avoiding transcriptions and manual classification steps, to support functions such as trend analysis, 
+    pharmacovigilance and clinical audit.</p>`
     },
     {
     opSelector: "Clinical research",
