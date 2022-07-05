@@ -5,7 +5,10 @@
   <img src="https://www.snomed.org/SNOMED/media/SNOMED/other/brand-mark.png" height="60px">
   <span id="title">SNOMED CT Implementation Roadmap Generator</span>
   <span class="example-spacer"></span>
-  <button mat-raised-button color="accent" [matMenuTriggerFor]="actionsMenu">Actions</button>
+  <button mat-raised-button color="accent" [matMenuTriggerFor]="actionsMenu">
+    <mat-icon>settings</mat-icon>&nbsp;
+    ACTIONS
+  </button>
   <mat-menu #actionsMenu="matMenu">
     <button mat-menu-item (click)="export()">Save Roadmap</button>
     <button mat-menu-item (click)="fileInput.click()">Load Roadmap</button>
@@ -16,10 +19,15 @@
     <mat-divider></mat-divider>
     <button mat-menu-item (click)="openTimelineDialog()">View Timeline</button>
     <button mat-menu-item (click)="openGanttDialog()">View Gantt Chart</button>
-  </mat-menu> <button mat-raised-button color="accent" [matMenuTriggerFor]="examplesMenu">Examples</button>
+  </mat-menu> <button mat-raised-button color="accent" [matMenuTriggerFor]="examplesMenu">
+    <mat-icon>cloud</mat-icon>&nbsp;
+    EXAMPLES
+  </button>
   <input hidden (change)="uploadFile($event)" #fileInput type="file" id="file">
   <mat-menu #examplesMenu="matMenu">
-    <button mat-menu-item (click)="loadJsonExample('example1.json')">Snomedland: Roadmap oriented to clinical benefit</button>
+    <button mat-menu-item (click)="loadJsonExample('example1.json')">
+      Snomedland: Roadmap oriented to clinical benefit
+    </button>
     <!-- <button mat-menu-item (click)="loadJsonExample('example2.json')">Republic of SNOMED: Roadmap oriented to interoperability</button> -->
   </mat-menu>
   <a href="https://github.com/alopezo/coding-demo-template-ng" target="_blank" mat-raised-button color="accent"><mat-icon>info</mat-icon></a>
